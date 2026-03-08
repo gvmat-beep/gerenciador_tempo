@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CronoCanvas - Gerenciador de Tempo</title>
+    <link rel="shortcut icon" href="cronologo.png" type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <!---fonte-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Shadows+Into+Light+Two&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&family=Winky+Rough:ital,wght@0,300..900;1,300..900&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="user-profile-container">
+        <div class="save-status" id="save-status">Salvo no Navegador ✓</div>
+        <button class="profile-btn" id="btn-profile">
+            <img id="profile-img" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Guest" alt="Perfil" style="display: none;">
+            <span id="profile-icon">👤</span>
+        </button>
+
+        <div class="auth-modal hidden" id="auth-modal">
+            <div id="logged-out-section">
+                <h3>Acesse sua Conta</h3>
+                <button class="auth-btn google-btn" id="btn-google">🌐 Entrar com Google</button>
+                <button class="auth-btn anon-btn" id="btn-anon">👻 Entrar como Anônimo</button>
+                
+                <div class="divider">ou</div>
+                
+                <input type="email" id="email-input" placeholder="Seu E-mail" class="auth-input">
+                <input type="password" id="password-input" placeholder="Sua Senha" class="auth-input">
+                <div class="auth-row">
+                    <button class="auth-btn" id="btn-login-email">Entrar</button>
+                    <button class="auth-btn outline" id="btn-signup-email">Cadastrar</button>
+                </div>
+            </div>
+
+            <div id="logged-in-section" class="hidden">
+                <h3 id="user-greeting">Olá!</h3>
+                <p id="user-email" style="font-size: 0.85rem; margin-bottom: 15px; text-align: center; word-break: break-all;"></p>
+                <button class="auth-btn logout-btn" id="btn-logout">Sair da Conta</button>
+            </div>
+        </div>
+    </div>
+    <!--botoes principais-->
+    <aside class="sidebar">
+        <div class="logo"><img src="cronologo.png" alt="logo" id="logo"><h1>CronoCanvas</h1></div>
+        
+        <button class="tool-btn" id="btn-add-block">➕ Novo Bloco</button>
+        <button class="tool-btn export-btn" id="btn-export">📸 Exportar Imagem</button>
+        <!--dicas-->
+        <div
+            style="font-size: 0.8rem; padding: 10px; background: white; border-radius: 8px; border: 1px solid #e0d4e5;">
+            <strong>Dicas:</strong><br>
+            • Selecione e use <b>Ctrl+C</b> / <b>Ctrl+V</b><br>
+            • <b>Delete</b> para apagar blocos<br>
+            • Arraste perto para encaixar
+        </div>
+        <!--calendario-->
+        <div class="calendar-widget">
+            <div class="calendar-header"><span>◀</span> <span>Março 2026</span> <span>▶</span></div>
+            <div class="weekdays">
+                <span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span></div>
+            <div class="calendar-grid" id="mini-calendar"></div>
+        </div>
+    </aside>
+    <!--Canvas-->
+    <main class="canvas-container" id="scroll-area">
+        <div class="canvas" id="canvas"></div>
+    </main>
+    <!--Minimapa-->
+    <div class="minimap-container" id="minimap">
+        <div class="minimap-viewport" id="minimap-viewport"></div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>
