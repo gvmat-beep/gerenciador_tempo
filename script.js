@@ -398,17 +398,89 @@ document.getElementById('btn-export').addEventListener('click', () => {
     });
 });
 
-// --- GERAR CALENDÁRIO ---
+// --- SISTEMA DE CALENDÁRIO DINÂMICO E INTERATIVO ---
+
+// Variáveis para rastrear qual mês/ano estamos visualizando
+let dataAtualCalendario = new Date();
+let mesVisor = dataAtualCalendario.getMonth();
+let anoVisor = dataAtualCalendario.getFullYear();
+
 const calGrid = document.getElementById('mini-calendar');
-for (let i = 0; i < 0; i++) calGrid.appendChild(document.createElement('div'));
-for (let i = 1; i <= 31; i++) {
-    const day = document.createElement('div');
-    day.className = 'cal-day';
-    if (i === 7) day.classList.add('today');
-    day.innerText = i;
-    calGrid.appendChild(day);
+const calHeaderDisplay = document.querySelector('.calendar-header span:nth-child(2)');
+const btnAnterior = document.querySelector('.calendar-header span:nth-child(1)');
+const btnProximo = document.querySelector('.calendar-header span:nth-child(3)');
+
+// Deixa o cursor com a "mãozinha" para indicar que as setas são clicáveis
+btnAnterior.style.cursor = 'pointer';
+btnProximo.style.cursor = 'pointer';
+
+function renderizarCalendario(mes, ano) {
+    const nomesMeses = [
+        "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    ];
+
+    // Atualiza o texto do cabeçalho
+    calHeaderDisplay.innerText = `${nomesMeses[mes]} ${ano}`;
+    
+    // Limpa os dias do mês anterior
+    calGrid.innerHTML = '';
+
+    // Descobre o dia da semana do dia 1º e quantos dias tem o mês
+    const primeiroDiaMes = new Date(ano, mes, 1).getDay();
+    const diasNoMes = new Date(ano, mes + 1, 0).getDate();
+
+    // Pega a data real de hoje para saber onde colocar a cor de destaque
+    const dataReal = new Date();
+    const diaHoje = dataReal.getDate();
+    const mesHoje = dataReal.getMonth();
+    const anoHoje = dataReal.getFullYear();
+
+    // Adiciona os espaços vazios iniciais
+    for (let i = 0; i < primeiroDiaMes; i++) {
+        const emptyDiv = document.createElement('div');
+        calGrid.appendChild(emptyDiv);
+    }
+
+    // Gera os números dos dias
+    for (let i = 1; i <= diasNoMes; i++) {
+        const day = document.createElement('div');
+        day.className = 'cal-day';
+        
+        // Verifica se é o dia exato de hoje (mesmo dia, mês e ano reais)
+        if (i === diaHoje && mes === mesHoje && ano === anoHoje) {
+            day.classList.add('today');
+        }
+        
+        day.innerText = i;
+        calGrid.appendChild(day);
+    }
 }
+
+// Lógica de voltar o mês (Seta para esquerda)
+btnAnterior.addEventListener('click', () => {
+    mesVisor--;
+    if (mesVisor < 0) {
+        mesVisor = 11; // Volta para Dezembro
+        anoVisor--;    // Volta um ano
+    }
+    renderizarCalendario(mesVisor, anoVisor);
+});
+
+// Lógica de avançar o mês (Seta para direita)
+btnProximo.addEventListener('click', () => {
+    mesVisor++;
+    if (mesVisor > 11) {
+        mesVisor = 0;  // Avança para Janeiro
+        anoVisor++;    // Avança um ano
+    }
+    renderizarCalendario(mesVisor, anoVisor);
+});
+
+// Inicializa o calendário pela primeira vez com o mês atual
+renderizarCalendario(mesVisor, anoVisor);
 
 // Iniciar
 loadState();
+
 updateMinimapViewport();
